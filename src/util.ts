@@ -30,7 +30,10 @@ function copyElementAttributes(destinationElement: Element, sourceElement: Eleme
 
 export function createDocumentFragment(html: string): DocumentFragment {
   const template = document.createElement("template")
-  template.innerHTML = html
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const fragment = new DOMParser().parseFromString(`<body>${html}</body>`, "text/html", { includeShadowRoots: true })
+  template.content.replaceChildren(...fragment.body.childNodes)
   return template.content
 }
 
@@ -67,7 +70,9 @@ export function nextMicrotask() {
 }
 
 export function parseHTMLDocument(html = "") {
-  return new DOMParser().parseFromString(html, "text/html")
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return new DOMParser().parseFromString(html, "text/html", { includeShadowRoots: true })
 }
 
 export function unindent(strings: TemplateStringsArray, ...values: any[]): string {
